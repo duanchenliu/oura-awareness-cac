@@ -1,0 +1,604 @@
+{
+  "unit_economics": {
+    "hardware_cm": 181.48000000000002,
+    "monthly_subscription_cm": 4.21696,
+    "monthly_retention": 0.9865480529881311
+  },
+  "calibration": {
+    "organic_share": 0.43477436764344946,
+    "paid_share": 0.46046445246739837,
+    "retail_share": 0.10476117988915219,
+    "blended_cac": 124.75681542500126,
+    "markets": 18,
+    "months": 36,
+    "observations": 513,
+    "sec_anchor_organic": 0.4
+  },
+  "adstock": {
+    "bic": -2556.817124183004,
+    "theta_brand": 0.3,
+    "theta_perf": 0.7999999999999998
+  },
+  "main_fit": {
+    "mu_alpha": {
+      "mean": -9.485569289056912,
+      "sd": 0.09504034396830774,
+      "ci_lo": -9.637206059038613,
+      "ci_hi": -9.331834222644154,
+      "r_hat": 0.9998655677256931
+    },
+    "mu_beta": {
+      "mean": 0.47171229840282025,
+      "sd": 0.038833311603681926,
+      "ci_lo": 0.41029479718912143,
+      "ci_hi": 0.5342129982548274,
+      "r_hat": 1.0015961365810626
+    },
+    "mu_gamma": {
+      "mean": 0.5564655291468156,
+      "sd": 0.1403715379436132,
+      "ci_lo": 0.3315542704523707,
+      "ci_hi": 0.7758358374833717,
+      "r_hat": 1.0004503579496722
+    },
+    "kappa": {
+      "mean": 0.05813817816759267,
+      "sd": 0.17408613784695157,
+      "ci_lo": -0.21320876156425508,
+      "ci_hi": 0.33538246058486687,
+      "r_hat": 1.0023529196504675
+    },
+    "tau_alpha": {
+      "mean": 0.23897127299285653,
+      "sd": 0.059243060696165264,
+      "ci_lo": 0.16076046000767316,
+      "ci_hi": 0.34384340264553825,
+      "r_hat": 1.0047394326488208
+    },
+    "tau_beta": {
+      "mean": 0.032550974099044894,
+      "sd": 0.015711271753681175,
+      "ci_lo": 0.008933330251814484,
+      "ci_hi": 0.058918866915342864,
+      "r_hat": 1.0076064743274349
+    },
+    "tau_gamma": {
+      "mean": 0.1809294668869386,
+      "sd": 0.1142953102686175,
+      "ci_lo": 0.018898150526474762,
+      "ci_hi": 0.3789775133574959,
+      "r_hat": 1.0013191125334917
+    },
+    "delta": {
+      "mean": 0.2121223059518566,
+      "sd": 0.02430237169231548,
+      "ci_lo": 0.1730898361518498,
+      "ci_hi": 0.2502230468915474,
+      "r_hat": 1.001366507164969
+    },
+    "zeta": {
+      "mean": 2.9401981188311064,
+      "sd": 0.21618285680224844,
+      "ci_lo": 2.5862902900868288,
+      "ci_hi": 3.283380120228998,
+      "r_hat": 1.001119189144092
+    },
+    "sigma": {
+      "mean": 0.07156173373121216,
+      "sd": 0.0024770493760682003,
+      "ci_lo": 0.06768212799249108,
+      "ci_hi": 0.07565526874514077,
+      "r_hat": 1.0012392818866955
+    }
+  },
+  "max_rhat": 1.0076064743274349,
+  "recovery": {
+    "corr_country_gamma": -0.37341802165625204,
+    "true_population_gamma": 1.8079002107548325,
+    "estimated_population_gamma": 0.5564655291468156,
+    "pct_error_population": 69.22034049022646,
+    "ci_covers_truth": false,
+    "true_country_sd": 0.5484789263988424,
+    "estimated_tau_gamma": 0.1809294668869386
+  },
+  "awareness_adstock": {
+    "theta": 0.9500000000000004,
+    "r2": 0.9697229720814335,
+    "slope": 1.3406560651128372
+  },
+  "stage1": {
+    "mu_a": -3.5730205242745323,
+    "mu_b": 1.3408665690185506,
+    "tau_a": 0.1671764440347396,
+    "tau_b": 0.030115620588081343,
+    "sig": 0.1449118540694882
+  },
+  "target_awareness": 0.15,
+  "unreachable_markets": [],
+  "price_of_awareness": {
+    "corr_logpop_logprice": 0.9632813828059235,
+    "slope_logpop": 0.8400811137608867,
+    "n_markets": 18
+  },
+  "awareness_cac_drivers": {
+    "bivariate": {
+      "corr_logpop": 0.9093880959728672,
+      "corr_log_qualdensity": -0.9536791064535514,
+      "corr_logcpm": -0.7860116679468659
+    },
+    "multivariate": {
+      "intercept": {
+        "coef": 1.5766735382732244,
+        "se": 0.34271566759626254,
+        "t": 4.60052949820383
+      },
+      "log_qualified_density": {
+        "coef": -1.6844904128819238,
+        "se": 0.4083943112520055,
+        "t": -4.124666692143234
+      },
+      "log_cpm": {
+        "coef": 1.8107428963899084,
+        "se": 0.7092706535160022,
+        "t": 2.552964636861372
+      },
+      "log_population": {
+        "coef": -0.11479431349560501,
+        "se": 0.17294863057268767,
+        "t": -0.6637480338264876
+      }
+    },
+    "r2": 0.9529059374691504
+  },
+  "pooling": {
+    "holdout": "MEX",
+    "n_train_months": 3,
+    "n_test_months": 12,
+    "none": {
+      "activation_mape": 34.02080992757237,
+      "cac_mape": 71.15525018915524,
+      "cac_pred": [
+        215.38327674786802,
+        134.42758365745797,
+        153.49106178686114,
+        162.20350174258448,
+        150.72400004259765,
+        155.10820714008162,
+        212.4952583246355,
+        225.61732187752418,
+        226.88693332877864,
+        189.97169996856846,
+        199.55876729538812,
+        185.4509610423993
+      ],
+      "cac_true": [
+        202.92693027362864,
+        128.913403704579,
+        162.81120604175527,
+        152.56735078565205,
+        112.81699412834901,
+        100.76600642099645,
+        94.61420402242062,
+        82.75623035586032,
+        94.57518158455498,
+        80.39913974752676,
+        99.98706911587503,
+        108.52342850362051
+      ],
+      "months": [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35
+      ]
+    },
+    "complete": {
+      "activation_mape": 15.450075181987474,
+      "cac_mape": 19.12959213968508,
+      "cac_pred": [
+        277.47515631617074,
+        166.27580545272866,
+        183.59417325189318,
+        166.8951619710284,
+        127.55429490836252,
+        104.35619142751078,
+        122.85490060952283,
+        111.3406117262138,
+        106.86111899259394,
+        96.04310917422333,
+        114.88457664749764,
+        122.97576268824432
+      ],
+      "cac_true": [
+        202.92693027362864,
+        128.913403704579,
+        162.81120604175527,
+        152.56735078565205,
+        112.81699412834901,
+        100.76600642099645,
+        94.61420402242062,
+        82.75623035586032,
+        94.57518158455498,
+        80.39913974752676,
+        99.98706911587503,
+        108.52342850362051
+      ],
+      "months": [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35
+      ]
+    },
+    "partial": {
+      "activation_mape": 7.769599371694107,
+      "cac_mape": 7.3261093676939515,
+      "cac_pred": [
+        214.7623811838017,
+        139.07615666618275,
+        143.20802667020996,
+        133.6887758856926,
+        102.39310931977272,
+        86.81535130892134,
+        94.86013874431507,
+        91.87771702376322,
+        89.03465074392855,
+        79.43535553325908,
+        95.15662343364902,
+        104.69392641540747
+      ],
+      "cac_true": [
+        202.92693027362864,
+        128.913403704579,
+        162.81120604175527,
+        152.56735078565205,
+        112.81699412834901,
+        100.76600642099645,
+        94.61420402242062,
+        82.75623035586032,
+        94.57518158455498,
+        80.39913974752676,
+        99.98706911587503,
+        108.52342850362051
+      ],
+      "months": [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35
+      ]
+    }
+  },
+  "geo_calibration": {
+    "vague": {
+      "mean": 0.5541384035810754,
+      "sd": 0.1445301239594241,
+      "lo": 0.308220635907828,
+      "hi": 0.786677444542314
+    },
+    "calibrated": {
+      "mean": 0.9346326647055995,
+      "sd": 0.1234421876646831,
+      "lo": 0.7450050671348667,
+      "hi": 1.142078676394743
+    },
+    "geo_experiment": {
+      "estimate": 1.75,
+      "se": 0.2
+    },
+    "sd_reduction_pct": 14.590685814855675,
+    "shift_in_mean": 0.3804942611245241
+  },
+  "allocation": {
+    "gamma_observational": 0.5564655291468156,
+    "gamma_geo": 1.8079002107548325,
+    "mean_brand_share_observational": 0.16999999999999998,
+    "mean_brand_share_geo": 0.43888888888888883,
+    "mean_activations_lost_pct": 14.81134716341472,
+    "mean_cac_penalty_pct": 18.22321588338172,
+    "per_market": [
+      {
+        "market": "UAE",
+        "code": "ARE",
+        "budget": 311048.4102,
+        "brand_share_observational": 0.27,
+        "brand_share_geo": 0.5,
+        "activations_lost_pct": 13.4861,
+        "cac_penalty_pct": 15.5884
+      },
+      {
+        "market": "Australia",
+        "code": "AUS",
+        "budget": 809942.3389,
+        "brand_share_observational": 0.27,
+        "brand_share_geo": 0.54,
+        "activations_lost_pct": 16.1824,
+        "cac_penalty_pct": 19.3066
+      },
+      {
+        "market": "Brazil",
+        "code": "BRA",
+        "budget": 507394.6932,
+        "brand_share_observational": 0.02,
+        "brand_share_geo": 0.02,
+        "activations_lost_pct": 0.0,
+        "cac_penalty_pct": 0.0
+      },
+      {
+        "market": "Canada",
+        "code": "CAN",
+        "budget": 1401033.4149,
+        "brand_share_observational": 0.27,
+        "brand_share_geo": 0.53,
+        "activations_lost_pct": 15.7089,
+        "cac_penalty_pct": 18.6365
+      },
+      {
+        "market": "Germany",
+        "code": "DEU",
+        "budget": 2502584.0473,
+        "brand_share_observational": 0.27,
+        "brand_share_geo": 0.55,
+        "activations_lost_pct": 16.4564,
+        "cac_penalty_pct": 19.6979
+      },
+      {
+        "market": "Spain",
+        "code": "ESP",
+        "budget": 823535.5942,
+        "brand_share_observational": 0.22,
+        "brand_share_geo": 0.54,
+        "activations_lost_pct": 19.7999,
+        "cac_penalty_pct": 24.6882
+      },
+      {
+        "market": "Finland",
+        "code": "FIN",
+        "budget": 286817.4293,
+        "brand_share_observational": 0.25,
+        "brand_share_geo": 0.48,
+        "activations_lost_pct": 14.6304,
+        "cac_penalty_pct": 17.1377
+      },
+      {
+        "market": "France",
+        "code": "FRA",
+        "budget": 1337931.782,
+        "brand_share_observational": 0.2,
+        "brand_share_geo": 0.54,
+        "activations_lost_pct": 20.9047,
+        "cac_penalty_pct": 26.4298
+      },
+      {
+        "market": "UK",
+        "code": "GBR",
+        "budget": 1887600.4695,
+        "brand_share_observational": 0.24,
+        "brand_share_geo": 0.56,
+        "activations_lost_pct": 18.9752,
+        "cac_penalty_pct": 23.4191
+      },
+      {
+        "market": "India",
+        "code": "IND",
+        "budget": 710617.2754,
+        "brand_share_observational": 0.02,
+        "brand_share_geo": 0.02,
+        "activations_lost_pct": 0.0,
+        "cac_penalty_pct": 0.0
+      },
+      {
+        "market": "Italy",
+        "code": "ITA",
+        "budget": 696879.8005,
+        "brand_share_observational": 0.02,
+        "brand_share_geo": 0.53,
+        "activations_lost_pct": 27.4869,
+        "cac_penalty_pct": 37.9062
+      },
+      {
+        "market": "Japan",
+        "code": "JPN",
+        "budget": 1833819.042,
+        "brand_share_observational": 0.02,
+        "brand_share_geo": 0.5,
+        "activations_lost_pct": 18.2766,
+        "cac_penalty_pct": 22.364
+      },
+      {
+        "market": "South Korea",
+        "code": "KOR",
+        "budget": 986471.5533,
+        "brand_share_observational": 0.16,
+        "brand_share_geo": 0.55,
+        "activations_lost_pct": 22.7003,
+        "cac_penalty_pct": 29.3666
+      },
+      {
+        "market": "Mexico",
+        "code": "MEX",
+        "budget": 357440.9116,
+        "brand_share_observational": 0.02,
+        "brand_share_geo": 0.02,
+        "activations_lost_pct": 0.0,
+        "cac_penalty_pct": 0.0
+      },
+      {
+        "market": "Netherlands",
+        "code": "NLD",
+        "budget": 628272.2392,
+        "brand_share_observational": 0.27,
+        "brand_share_geo": 0.52,
+        "activations_lost_pct": 15.0461,
+        "cac_penalty_pct": 17.7109
+      },
+      {
+        "market": "Poland",
+        "code": "POL",
+        "budget": 218844.9988,
+        "brand_share_observational": 0.02,
+        "brand_share_geo": 0.49,
+        "activations_lost_pct": 16.873,
+        "cac_penalty_pct": 20.2979
+      },
+      {
+        "market": "Singapore",
+        "code": "SGP",
+        "budget": 230694.8755,
+        "brand_share_observational": 0.25,
+        "brand_share_geo": 0.51,
+        "activations_lost_pct": 16.4722,
+        "cac_penalty_pct": 19.7207
+      },
+      {
+        "market": "Sweden",
+        "code": "SWE",
+        "budget": 419429.199,
+        "brand_share_observational": 0.27,
+        "brand_share_geo": 0.5,
+        "activations_lost_pct": 13.605,
+        "cac_penalty_pct": 15.7474
+      }
+    ]
+  },
+  "uk_cac_gap": {
+    "avg": 91.87277609096735,
+    "marginal": 142.83703437368663,
+    "ratio": 1.5547264429264365
+  },
+  "payback_table": [
+    {
+      "market": "Australia",
+      "cac": 67.02,
+      "qd": 0.1,
+      "payback": 0.0
+    },
+    {
+      "market": "Brazil",
+      "cac": 88.34,
+      "qd": 0.01,
+      "payback": 0.0
+    },
+    {
+      "market": "Canada",
+      "cac": 73.21,
+      "qd": 0.09,
+      "payback": 0.0
+    },
+    {
+      "market": "Finland",
+      "cac": 46.51,
+      "qd": 0.14,
+      "payback": 0.0
+    },
+    {
+      "market": "France",
+      "cac": 103.72,
+      "qd": 0.06,
+      "payback": 0.0
+    },
+    {
+      "market": "Germany",
+      "cac": 71.17,
+      "qd": 0.07,
+      "payback": 0.0
+    },
+    {
+      "market": "India",
+      "cac": 119.54,
+      "qd": 0.0,
+      "payback": 0.0
+    },
+    {
+      "market": "Italy",
+      "cac": 100.27,
+      "qd": 0.04,
+      "payback": 0.0
+    },
+    {
+      "market": "Japan",
+      "cac": 151.02,
+      "qd": 0.06,
+      "payback": 0.0
+    },
+    {
+      "market": "Mexico",
+      "cac": 93.48,
+      "qd": 0.01,
+      "payback": 0.0
+    },
+    {
+      "market": "Netherlands",
+      "cac": 54.84,
+      "qd": 0.11,
+      "payback": 0.0
+    },
+    {
+      "market": "Poland",
+      "cac": 90.1,
+      "qd": 0.03,
+      "payback": 0.0
+    },
+    {
+      "market": "Singapore",
+      "cac": 74.85,
+      "qd": 0.15,
+      "payback": 0.0
+    },
+    {
+      "market": "South Korea",
+      "cac": 122.85,
+      "qd": 0.07,
+      "payback": 0.0
+    },
+    {
+      "market": "Spain",
+      "cac": 93.48,
+      "qd": 0.05,
+      "payback": 0.0
+    },
+    {
+      "market": "Sweden",
+      "cac": 49.7,
+      "qd": 0.12,
+      "payback": 0.0
+    },
+    {
+      "market": "UAE",
+      "cac": 58.34,
+      "qd": 0.12,
+      "payback": 0.0
+    },
+    {
+      "market": "UK",
+      "cac": 96.67,
+      "qd": 0.08,
+      "payback": 0.0
+    }
+  ],
+  "runtime_sec": 206.7
+}

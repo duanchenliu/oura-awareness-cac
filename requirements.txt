@@ -1,0 +1,8 @@
+numpy>=2.0
+pandas>=2.2
+scipy>=1.13
+matplotlib>=3.8
+pymc>=6.0
+arviz>=1.0
+nbformat>=5.10
+nbconvert>=7.16

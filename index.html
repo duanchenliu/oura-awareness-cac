@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Awareness and CAC Across Countries</title>
+<meta name="description" content="A hierarchical Bayesian marketing mix model with awareness mediation, built on simulated data for an international expansion decision.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;450;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FAFAF7; --ink:#121713; --deep:#0D1714; --deep-2:#16241F;
+  --rule:#DDDFD5; --muted:#5E6760;
+  --measured:#12594A; --attenuated:#B07D1A;
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'IBM Plex Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --wrap:min(100% - 2.5rem, 70rem);
+  --col:min(100% - 2.5rem, 40rem);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:1.0625rem; line-height:1.65;
+  font-weight:400; -webkit-font-smoothing:antialiased;
+}
+.col{width:var(--col); margin-inline:auto}
+.wide{width:var(--wrap); margin-inline:auto}
+h1,h2,h3{font-family:var(--serif); font-weight:500; line-height:1.12; letter-spacing:-.012em; margin:0}
+p{margin:0 0 1.1em}
+a{color:var(--measured); text-underline-offset:3px; text-decoration-thickness:1px}
+a:focus-visible,button:focus-visible{outline:2.5px solid var(--measured); outline-offset:3px; border-radius:2px}
+strong{font-weight:600}
+
+/* ---------- hero ---------- */
+.hero{background:var(--deep); color:#EDEFE8; padding:clamp(3.5rem,9vw,6.5rem) 0 clamp(3rem,7vw,5rem)}
+.hero h1{font-size:clamp(2.1rem,6.2vw,3.5rem); color:#F6F7F1; max-width:17ch; font-weight:500}
+.hero .standfirst{margin-top:1.4rem; font-size:clamp(1.02rem,2.3vw,1.18rem); color:#AFBAB2; max-width:52ch; line-height:1.6}
+.byline{margin-top:2.2rem; font-size:.9rem; color:#8A968D; line-height:1.9}
+.byline a{color:#C9D3C9}
+
+/* ---------- the algebra ---------- */
+.algebra{margin:clamp(2.75rem,7vw,4.25rem) 0 0; padding-top:2.25rem; border-top:1px solid #2A3A33}
+.algebra .lede{font-size:.95rem; color:#9BA79E; max-width:48ch; margin-bottom:1.9rem}
+.eq{display:flex; align-items:center; gap:clamp(.7rem,2.4vw,1.4rem); flex-wrap:wrap;
+    font-family:var(--mono); font-size:clamp(.82rem,2.5vw,1.12rem); color:#E4E8DE}
+.eq .lhs{font-family:var(--serif); font-size:clamp(1rem,3vw,1.35rem); font-style:italic; color:#F6F7F1}
+.frac{display:inline-flex; flex-direction:column; text-align:center}
+.frac .num{padding:0 .55rem .34rem}
+.frac .den{padding:.34rem .55rem 0; border-top:1.5px solid #6E7E75}
+.cancels{position:relative; color:#E4E8DE; transition:color .5s ease .15s}
+.cancels::after{content:""; position:absolute; left:-6%; right:-6%; top:50%;
+  height:1.5px; background:var(--attenuated); transform:scaleX(0); transform-origin:left;
+  transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.run .cancels{color:#79857C}
+.run .cancels::after{transform:scaleX(1)}
+.run .cancels.b::after{transition-delay:.18s}
+.eq .result{color:#8FD3BF}
+.verdict{margin-top:1.8rem; font-family:var(--serif); font-size:clamp(1.08rem,2.9vw,1.4rem);
+  color:#F6F7F1; max-width:40ch; line-height:1.34}
+
+/* ---------- sections ---------- */
+section{padding:clamp(3rem,7vw,4.75rem) 0}
+section + section{border-top:1px solid var(--rule)}
+h2{font-size:clamp(1.5rem,3.9vw,2.05rem); max-width:22ch; margin-bottom:1.3rem}
+h3{font-size:1.18rem; margin:2.3rem 0 .7rem; font-weight:600}
+.kicker{font-family:var(--serif); font-style:italic; font-size:1.06rem; color:var(--muted); margin-bottom:.5rem}
+
+/* ---------- notice ---------- */
+.notice{border-left:3px solid var(--attenuated); padding:.15rem 0 .15rem 1.25rem; margin:0 0 2rem}
+.notice p{font-size:.985rem; color:var(--muted)}
+.notice p:last-child{margin-bottom:0}
+.notice b{color:var(--ink)}
+
+/* ---------- findings ---------- */
+.findings{margin-top:.5rem}
+.finding{display:grid; grid-template-columns:1fr 15.5rem; gap:1.5rem 2.5rem;
+  padding:1.5rem 0; border-top:1px solid var(--rule); align-items:start}
+.finding:last-child{border-bottom:1px solid var(--rule)}
+.finding .claim{font-family:var(--serif); font-size:1.17rem; line-height:1.38}
+.finding .ev{font-size:.9rem; color:var(--muted); line-height:1.6}
+.finding .ev b{font-family:var(--mono); font-size:.86rem; font-weight:500; color:var(--ink)}
+
+/* ---------- figures ---------- */
+figure{margin:2.25rem 0; }
+figure img{width:100%; height:auto; display:block; background:#fff;
+  border:1px solid var(--rule); border-radius:3px}
+figcaption{margin-top:.7rem; font-size:.875rem; color:var(--muted); line-height:1.55; max-width:62ch}
+
+/* ---------- compare strip ---------- */
+.compare{display:grid; grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr)); gap:1.75rem;
+  margin:2rem 0; padding:1.5rem 0; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule)}
+.compare div p{margin:0}
+.compare .v{font-family:var(--serif); font-size:clamp(1.65rem,4.4vw,2.2rem); line-height:1; font-weight:500}
+.compare .k{font-size:.86rem; color:var(--muted); margin-top:.5rem; line-height:1.45}
+.v.bad{color:var(--attenuated)} .v.good{color:var(--measured)}
+
+/* ---------- math block ---------- */
+.math{font-family:var(--mono); font-size:.9rem; background:#F2F3EC; border:1px solid var(--rule);
+  border-radius:3px; padding:1.1rem 1.25rem; overflow-x:auto; line-height:1.9; margin:1.5rem 0}
+.math i{color:var(--measured); font-style:normal}
+
+/* ---------- list ---------- */
+ul.plain{list-style:none; padding:0; margin:1.2rem 0}
+ul.plain li{padding:.55rem 0 .55rem 1.5rem; position:relative; line-height:1.6}
+ul.plain li::before{content:""; position:absolute; left:0; top:1.22rem; width:.62rem; height:1.5px;
+  background:var(--measured)}
+ul.plain li b{font-weight:600}
+
+/* ---------- footer ---------- */
+footer{background:var(--deep-2); color:#B6C1B8; padding:3.25rem 0; font-size:.95rem}
+footer h2{color:#F6F7F1; font-size:1.35rem; margin-bottom:1rem}
+footer a{color:#8FD3BF}
+footer p{max-width:56ch}
+.links{display:flex; gap:1.75rem; flex-wrap:wrap; margin-top:1.5rem}
+
+@media (max-width:640px){
+  .finding{grid-template-columns:1fr; gap:.65rem}
+  .finding .ev{padding-left:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .cancels::after{transition:none; transform:scaleX(1)}
+  .run .cancels{transition:none}
+  *{animation:none !important}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="col">
+    <h1>How brand awareness moves CAC, and why country size is a red herring</h1>
+    <p class="standfirst">A hierarchical Bayesian marketing mix model with awareness mediation,
+      built on simulated data for an international expansion decision. The most useful
+      result is the one where the model gets it wrong.</p>
+    <p class="byline">
+      Duanchen Liu — senior data scientist, growth and go-to-market analytics<br>
+      October 2026
+    </p>
+  </div>
+
+  <div class="col algebra" id="algebra">
+    <p class="lede">Everyone expects awareness to be expensive in large markets. It is.
+      But the buyers scale with population too, and the two effects cancel:</p>
+
+    <div class="eq">
+      <span class="lhs">CAC<sub>awareness</sub></span>
+      <span>∝</span>
+      <span class="frac">
+        <span class="num"><span class="cancels a">pop</span> × cpm</span>
+        <span class="den"><span class="cancels b">pop</span> × density × γ</span>
+      </span>
+      <span>=</span>
+      <span class="frac result">
+        <span class="num">cpm</span>
+        <span class="den">density × γ</span>
+      </span>
+    </div>
+
+    <p class="verdict">What decides the cost of awareness-led growth is how
+      <em>concentrated</em> the qualified buyers are, not how many people live there.</p>
+  </div>
+</header>
+
+<main>
+
+<section class="col">
+  <div class="notice">
+    <p><b>Every number here is simulated.</b> I had no access to Oura internal data.
+      I built a generative model of 18 international markets whose structural anchors
+      match figures Oura disclosed publicly in its Form S-1 (filed 3 September 2026):
+      roughly 40% of new subscribers arriving organically, about 85% twelve-month paid
+      retention, international markets under 20% of hardware sales.</p>
+    <p>The reason to simulate is that it lets me check the method against a known
+      answer. That check is where the most interesting finding came from.</p>
+  </div>
+
+  <h2>The question</h2>
+  <p>Oura's S-1 names brand awareness and distribution expansion as the growth thesis,
+    and describes a plan to enter underpenetrated markets with a disciplined, localized
+    go-to-market approach. Behind that sits a planning question somebody has to answer
+    with numbers: <strong>if we spend to build awareness in a new country, what happens
+    to CAC, and does the answer depend on how big the country is?</strong></p>
+  <p>The simulated world runs 18 markets over 36 months — 513 market-months — each with
+    its own population, income, media cost, retail footprint, competitive intensity and
+    launch date. Awareness is a decaying stock fed by reach. Acquisitions come from three
+    channels, each of which awareness feeds differently: organic word of mouth, paid
+    conversion lift, and retail sell-through.</p>
+
+  <div class="compare">
+    <div><p class="v">43.5%</p><p class="k">organic share of activations<br>(S-1 anchor: ~40%)</p></div>
+    <div><p class="v">$125</p><p class="k">blended CAC across markets</p></div>
+    <div><p class="v">18</p><p class="k">markets simulated</p></div>
+    <div><p class="v">1.008</p><p class="k">max r-hat across all parameters</p></div>
+  </div>
+
+  <h2>What I found</h2>
+  <div class="findings">
+    <div class="finding">
+      <p class="claim">Population washes out. At matched awareness, awareness-driven CAC is
+        set by qualified buyer density and media cost — not market size.</p>
+      <p class="ev">log-population coefficient <b>−0.11</b>, t = −0.66, in a regression with
+        R² = 0.95. Taken alone, population correlates <b>+0.91</b>.</p>
+    </div>
+    <div class="finding">
+      <p class="claim">An observational marketing mix model understates the awareness
+        effect by about 69%, and its credible interval misses the truth entirely.</p>
+      <p class="ev">true γ = <b>1.81</b> against an estimated γ = <b>0.56</b></p>
+    </div>
+    <div class="finding">
+      <p class="claim">That bias has a price. It recommends putting 17% of budget into
+        brand when the right answer is 44%.</p>
+      <p class="ev">costs <b>14.8%</b> of activations at identical spend</p>
+    </div>
+    <div class="finding">
+      <p class="claim">Partial pooling is what makes forecasting a barely-launched market
+        possible at all.</p>
+      <p class="ev">CAC forecast error <b>71%</b> → <b>19%</b> → <b>7%</b> across no,
+        complete and partial pooling</p>
+    </div>
+    <div class="finding">
+      <p class="claim">Brand-to-awareness and brand-to-acquisition need different carryover
+        rates. Using one for both flips the sign of the brand coefficient.</p>
+      <p class="ev">θ = <b>0.95</b> for awareness against θ = <b>0.30</b> for acquisition</p>
+    </div>
+  </div>
+</section>
+
+<section class="col">
+  <p class="kicker">The model</p>
+  <h2>Two stages, pooled across markets</h2>
+  <p>The model only ever sees what a real team would have: spend by channel, a noisy
+    awareness proxy, activations and country covariates. It never sees latent awareness
+    or any true parameter.</p>
+
+  <div class="math">
+<b>Stage 1 — awareness response</b>
+logit(A<sub>ct</sub>) = a<sub>c</sub> + b<sub>c</sub> · log(1 + adstock(brand<sub>ct</sub>) / (pop<sub>c</sub> · cpm<sub>c</sub>))
+
+<b>Stage 2 — acquisition response</b>
+log(activations<sub>ct</sub> / TAM<sub>c</sub>) = α<sub>c</sub> + β<sub>c</sub>·log(1 + perf̃<sub>ct</sub>) + <i>γ<sub>c</sub>·A<sub>ct</sub></i>
+                                 + δ·doors + ζ·penetration + season + ε
+
+<b>Partial pooling</b>
+α<sub>c</sub> ~ N(μ<sub>α</sub>, τ<sub>α</sub>)   β<sub>c</sub> ~ N(μ<sub>β</sub>, τ<sub>β</sub>)   γ<sub>c</sub> ~ N(μ<sub>γ</sub> + κ·z<sub>c</sub>, τ<sub>γ</sub>)
+  </div>
+
+  <p>κ tests whether awareness is <em>more potent</em> where qualified buyers are dense.
+    It came back null — <span style="font-family:var(--mono);font-size:.92em">0.06 ± 0.17</span>.
+    Awareness works about equally well everywhere; a point of awareness buys the same
+    proportional lift in Finland as in Brazil.</p>
+  <p>That negative result is what makes the problem tractable. All the cross-country
+    variation lives in the <em>price</em> of awareness and the <em>size of the qualified
+    base</em> — two things you can measure — rather than in a per-country black box.</p>
+
+  <h3>A trap worth knowing about</h3>
+  <p>My first version used one carryover rate across both stages. That is wrong in a way
+    that silently inverts the answer. Awareness is a stock that accumulates and decays
+    slowly; brand spend is a flow that peaks at launch. So in raw monthly data the months
+    with the most brand spend are the months with the <em>least</em> accumulated awareness,
+    and the regression reports that brand spend destroys awareness.</p>
+  <p>With a 13.5-month half-life the adstock behaves like the stock it is meant to proxy
+    and the slope turns positive, R² = 0.97. A team that runs one adstock search across
+    the whole model will conclude brand does nothing — and ship a budget recommendation
+    that is confidently backwards.</p>
+
+  <figure>
+    <img src="figures/f1_awareness_trajectories.png" alt="Awareness over time for seven markets, ranging from Finland above 60 percent to India near 5 percent">
+    <figcaption>Every market runs the same playbook with budget sized to its qualified
+      opportunity. The outcomes diverge anyway. Explaining that divergence is the job.</figcaption>
+  </figure>
+</section>
+
+<section class="col">
+  <p class="kicker">Recovery</p>
+  <h2>The model fails, and the failure is the finding</h2>
+  <p>Because I wrote the simulator, I can differentiate it analytically and get the true
+    semi-elasticity of activations with respect to awareness. Then compare.</p>
+
+  <div class="compare">
+    <div><p class="v good">1.81</p><p class="k">true awareness effect</p></div>
+    <div><p class="v bad">0.56</p><p class="k">what the MMM estimates</p></div>
+    <div><p class="v bad">69%</p><p class="k">understatement</p></div>
+    <div><p class="v bad">No</p><p class="k">does the credible interval cover the truth</p></div>
+  </div>
+
+  <figure>
+    <img src="figures/f7b_attenuation.png" alt="Bar chart comparing the true awareness effect of 1.81 against the model estimate of 0.56">
+  </figure>
+
+  <p>This is attenuation from confounding, not noise, and more data will not fix it.
+    Brand spend, performance spend and penetration all move together, so the model has no
+    way to isolate awareness's contribution and distributes it across the correlated
+    regressors instead.</p>
+  <p>I want to be direct about what this means, because it is the opposite of the usual
+    pitch for marketing mix modelling: <strong>an observational MMM is not a causal
+    estimate of brand value.</strong> It is a decomposition that assumes it has the right
+    controls, and when it is wrong about brand it is wrong in a systematic direction —
+    downward — because brand is the channel most confounded with everything else.</p>
+  <p>I suspect that is a meaningful part of why marketing teams across the industry
+    under-invest in upper funnel. The measurement system has a thumb on the scale.</p>
+</section>
+
+<section class="col">
+  <p class="kicker">Consequence</p>
+  <h2>What the bias costs in a budget meeting</h2>
+  <p>A bias only matters if it changes a decision. So: hold the budget fixed and ask what
+    brand-versus-performance split maximises activations, once under the attenuated γ and
+    once under the γ a geo experiment would deliver.</p>
+
+  <figure>
+    <img src="figures/f7c_allocation.png" alt="Dumbbell chart showing optimal brand budget share rising from around 17 percent to around 44 percent in fifteen markets, while Mexico, India and Brazil stay at the floor under both">
+    <figcaption>Fifteen markets should roughly double their brand share. Mexico, India and
+      Brazil sit at the floor under <em>both</em> estimates — where qualified density is low
+      enough, brand is correctly not worth funding even when you measure it properly.</figcaption>
+  </figure>
+
+  <p>That last point is the one I would want to land. The recommendation is not "spend more
+    on brand." It is "spend much more on brand in these fifteen markets and almost none in
+    these three, and here is the parameter that separates them."</p>
+
+  <h3>Priors do not fix confounding</h3>
+  <p>My first attempt at the correction was to encode the geo-experiment result as a
+    Bayesian prior on μ<sub>γ</sub> and let the model update. It moves the posterior from
+    0.55 to 0.93 — partway — and then stalls, because 513 observations of likelihood pull
+    hard the other way.</p>
+  <p>When a model is confounded rather than merely imprecise, a well-chosen prior just
+    splits the difference between a good experiment and a bad identification strategy. The
+    right move is to <strong>pin</strong> the brand coefficient to the experimental estimate
+    and let the MMM allocate everything else conditional on it — treating the geo result as
+    measurement rather than as evidence to be weighed.</p>
+
+  <figure>
+    <img src="figures/f7_geo_calibration.png" alt="Interval plot showing the posterior for the awareness effect shifting only partway toward the true value when a geo-calibrated prior is applied">
+  </figure>
+</section>
+
+<section class="col">
+  <p class="kicker">The country question</p>
+  <h2>Why size is the wrong variable</h2>
+  <p>The price of awareness scales almost linearly with population — reaching 15% awareness
+    in India costs on the order of 300 times what it costs in Finland. So far this supports
+    the instinct that large markets are forbidding.</p>
+
+  <figure>
+    <img src="figures/f2_price_of_awareness.png" alt="Log-log scatter of monthly brand spend needed to sustain 15 percent awareness against population, with a fitted slope of 0.84">
+    <figcaption>Correlation 0.96 between log population and log cost of awareness.
+      But cost is only the numerator.</figcaption>
+  </figure>
+
+  <p>Taken alone, log population correlates <strong>+0.91</strong> with awareness-driven CAC
+    — exactly the misleading result that would justify avoiding large markets. Control for
+    qualified density and media cost and the population coefficient collapses to
+    <strong>−0.11</strong>, t = −0.66, in a regression explaining 95% of the variance.
+    What survives is qualified density at −1.68 and media cost at +1.81.</p>
+
+  <figure>
+    <img src="figures/f3_awareness_cac_vs_density.png" alt="Log-log scatter showing awareness-driven CAC falling with qualified buyer density at an elasticity near -1, with point colour showing population varies freely along the line">
+    <figcaption>Colour encodes population. It varies freely along the fitted line, which is
+      the visual form of the cancellation.</figcaption>
+  </figure>
+
+  <p>India is expensive not because it is large but because 99.8% of the people your
+    awareness spend reaches cannot buy the product. Singapore is cheap not because it is
+    small but because roughly one person in seven is a plausible buyer.</p>
+  <p><strong>This reverses the planning heuristic.</strong> "Enter small markets first" is
+    wrong. The rule is "enter dense markets first, at any size" — which makes a large,
+    wealthy, concentrated market the best entry target available rather than the most
+    daunting one.</p>
+</section>
+
+<section class="col">
+  <p class="kicker">Forecasting</p>
+  <h2>A market with three months of history</h2>
+  <p>The practical obstacle to all of this is that a new country has almost no data. So I
+    ran the test that actually matters: Mexico enters with three months of history. Fit
+    three ways on the other 17 full markets plus those three months, then forecast Mexico's
+    next ten months of CAC.</p>
+
+  <figure>
+    <img src="figures/f5_pooling_experiment.png" alt="Forecast lines for Mexico CAC under three pooling approaches, and a bar chart of forecast error: 71 percent no pooling, 19 percent complete pooling, 7 percent partial pooling">
+  </figure>
+
+  <ul class="plain">
+    <li><b>No pooling</b> fits Mexico on Mexico alone. Three observations, five parameters:
+      the sampler threw 94 divergences and the forecast is unusable. This is what "let's
+      wait until we have enough data" actually produces.</li>
+    <li><b>Complete pooling</b> applies one global coefficient set and does far better, but
+      insists Mexico behaves like Germany.</li>
+    <li><b>Partial pooling</b> shrinks Mexico's coefficients toward the group mean, weighted
+      by how little data Mexico has, and beats both by a wide margin.</li>
+  </ul>
+
+  <p>Nobody chooses that weighting by hand. τ is estimated from the data, so the model works
+    out for itself how similar these markets are. A mature market with four years of history
+    is trusted on its own evidence; a market with one quarter is pulled toward the pooled
+    mean. That is the whole argument for building one model across all 56 markets rather
+    than 56 models.</p>
+  <p>Honestly though: the per-country intervals are wide and heavily shrunk, τ<sub>γ</sub>
+    = 0.18, which is consistent with the recovery failure above. The pooled mean is
+    informative; the country deviations are not. A team reporting per-country brand ROIs
+    off this model would be reporting noise.</p>
+
+  <figure>
+    <img src="figures/f4_gamma_forest.png" alt="Forest plot of country-level awareness coefficients with wide overlapping intervals around a pooled mean of 0.56">
+  </figure>
+</section>
+
+<section class="col">
+  <p class="kicker">Decision layer</p>
+  <h2>Coefficients are not decisions</h2>
+
+  <figure>
+    <img src="figures/f6_marginal_vs_average_cac.png" alt="Average and marginal CAC curves for the UK against monthly performance spend, with marginal CAC at 143 dollars against an average of 92 dollars at current spend">
+    <figcaption>At current UK spend, average CAC is $92 and marginal CAC is $143.</figcaption>
+  </figure>
+
+  <p>Average CAC is a reporting number; marginal CAC is the budgeting number. For a
+    power-law response curve with exponent β, marginal CAC equals average CAC divided by β
+    — so at β ≈ 0.47 the next customer costs roughly twice the reported average. The
+    allocation rule that follows is to set spend so that marginal CAC is equal across every
+    channel and market. If the UK's marginal CAC is $143 and Spain's is $95, the next dollar
+    belongs in Spain regardless of which has the better average.</p>
+
+  <figure>
+    <img src="figures/f8_cac_vs_penetration.png" alt="Blended CAC plotted against penetration of qualified TAM for six markets, putting all markets on a comparable maturity axis">
+    <figcaption>Plotting CAC against penetration rather than calendar time puts markets on a
+      comparable axis. Two markets at 4% penetration are comparable; an 18-month-old market
+      and a 3-month-old one are not.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="figures/f9_payback.png" alt="Horizontal bar chart of months to repay CAC from contribution margin by market, with most markets repaying immediately">
+    <figcaption>With hardware contribution margin around $181 and a subscription annuity
+      behind it, most markets repay acquisition cost immediately.</figcaption>
+  </figure>
+
+  <p>Which means <strong>CAC is the wrong guardrail.</strong> The business can tolerate a far
+    higher CAC than a pure-subscription company could, so entry decisions should run on
+    payback period against contribution margin. A market with $250 CAC and strong retention
+    beats one with $120 CAC and churn, and optimising CAC directly gets that backwards.</p>
+</section>
+
+<section class="col">
+  <p class="kicker">Measurement</p>
+  <h2>The trap I would raise first</h2>
+  <p>In a retail-heavy market, awareness drives sell-through that direct-to-consumer
+    attribution cannot see. Brand spend goes up, retail units move, and DTC CAC gets
+    <em>worse</em> — so the reporting metric punishes the thing that is working. Across these
+    simulated markets, measuring CAC on DTC alone overstates it by about 12% on average.</p>
+  <p>Oura has an unusual escape. Every ring has to be activated in the app to be usable,
+    which makes <strong>app activation a universal, geolocated acquisition event</strong>
+    across DTC, Amazon and roughly 8,400 retail doors. Most consumer hardware companies
+    cannot measure retail-driven acquisition at all. Model activations, not orders —
+    everything here does.</p>
+
+  <figure>
+    <img src="figures/f10_channel_mix.png" alt="Stacked bar chart of activation sources by market, showing organic, paid performance and retail shares">
+  </figure>
+</section>
+
+<section class="col">
+  <h2>What I would actually do with this</h2>
+  <ul class="plain">
+    <li><b>Build one hierarchical model across all 56 markets</b>, not 56 models. Partial
+      pooling is what lets a market with a single quarter of data get a usable forecast.</li>
+    <li><b>Run a standing geo-holdout programme on upper funnel</b>, because the
+      observational model cannot see brand and is biased downward by roughly 69%. Pin the
+      brand coefficient to the experimental estimate rather than treating it as a prior.</li>
+    <li><b>Report marginal CAC and payback period</b>, computed on activations rather than
+      DTC orders. Average DTC CAC is the metric most likely to make good brand work look
+      like failure.</li>
+    <li><b>Select markets on qualified density, not size.</b> The heuristic "start small" is
+      wrong; the rule is "start dense."</li>
+  </ul>
+
+  <h3>Limitations, on the record</h3>
+  <ul class="plain">
+    <li>All data is simulated. The structural conclusions follow from my generative model,
+      and real data could behave differently — most plausibly if awareness effects vary by
+      market in ways my simulator holds constant.</li>
+    <li>Carryover rates are grid-searched rather than jointly estimated, so that uncertainty
+      is not propagated.</li>
+    <li>The geo experiment is simulated at a precision a real test would need meaningful
+      spend and several weeks to achieve.</li>
+    <li>Qualified density is invented. In production it is a research deliverable, and the
+      entire result is sensitive to it — which is itself an argument for investing in getting
+      it right.</li>
+  </ul>
+</section>
+
+</main>
+
+<footer>
+  <div class="col">
+    <h2>Code and full analysis</h2>
+    <p>The notebook walks through the generative model, the fit, every diagnostic and the
+      decision layer. Reproduce the whole study in about four minutes with
+      <span style="font-family:var(--mono);font-size:.9em">python3 src/simulate.py &amp;&amp; python3 src/analysis.py</span>.</p>
+    <p class="links">
+      <a href="notebooks/awareness_cac_analysis.ipynb">Analysis notebook</a>
+      <a href="https://github.com/duanchenliu">GitHub</a>
+      <a href="https://duanchenliu.github.io">duanchenliu.github.io</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var el = document.getElementById('algebra');
+  if (!el) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { el.classList.add('run'); return; }
+  var fired = false;
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if (e.isIntersecting && !fired) { fired = true; setTimeout(function(){ el.classList.add('run'); }, 650); }
+    });
+  }, {threshold:.4});
+  io.observe(el);
+})();
+</script>
+</body>
+</html>
